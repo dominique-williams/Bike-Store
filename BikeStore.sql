@@ -1,43 +1,44 @@
 /*
 Creating a master dataset for an executive revenue dashboard.
 
-Skills Used: Joins, Aggregate Functions, Concatenating
+Skills Used: INNER JOINs, Aggregate Functions, Concatenating
 */
-Select o.order_id,
-Concat(c.first_name, ' ', c.last_name) as [customers],
-c.city,
-c.state, 
-o.order_date,
-Sum(i.quantity) as [total units],
-Sum(i.quantity * i.list_price) as [revenue],
-p.product_name,
-ca.category_name,
-b.brand_name,
-s.store_name,
-Concat(st.first_name, ' ', st.last_name) as [sales rep]
-From sales.orders o
-Join sales.customers c
-On o.customer_id = c.customer_id
-Join sales.order_items i
-On o.order_id = i.order_id
-Join production.products p
-On i.product_id = p.product_id
-join production.categories ca
-On p.category_id = ca.category_id
-Join production.brands b
-On p.brand_id = b.brand_id
-Join sales.stores s
-On o.store_id = s.store_id
-Join sales.staffs st
-On o.staff_id = st.staff_id
-Group by o.order_id,
-Concat(c.first_name, ' ', c.last_name), 
-c.city, 
-c.state, 
-o.order_date,
-p.product_name,
-ca.category_name,
-b.brand_name,
-s.store_name,
-Concat(st.first_name, ' ', st.last_name)
-
+SELECT 
+	o.order_id,
+	CONCAT(c.first_name, ' ', c.last_name) [customers],
+	c.city,
+	c.state, 
+	o.order_date,
+	SUM(i.quantity) [total units],
+	SUM(i.quantity * i.list_price) [revenue],
+	p.product_name,
+	ca.category_name,
+	b.brand_name,
+	s.store_name,
+	CONCAT(st.first_name, ' ', st.last_name) [sales rep]
+FROM sales.orders o
+	INNER JOIN sales.customers c
+		ON o.customer_id = c.customer_id
+	INNER JOIN sales.order_items i
+		ON o.order_id = i.order_id
+	INNER JOIN production.products p
+		ON i.product_id = p.product_id
+	INNER JOIN production.categories ca
+		ON p.category_id = ca.category_id
+	INNER JOIN production.brands b
+		ON p.brand_id = b.brand_id
+	INNER JOIN sales.stores s
+		ON o.store_id = s.store_id
+	INNER JOIN sales.staffs st
+		ON o.staff_id = st.staff_id
+GROUP BY 
+	o.order_id,
+	CONCAT(c.first_name, ' ', c.last_name), 
+	c.city, 
+	c.state, 
+	o.order_date,
+	p.product_name,
+	ca.category_name,
+	b.brand_name,
+	s.store_name,
+	CONCAT(st.first_name, ' ', st.last_name)
